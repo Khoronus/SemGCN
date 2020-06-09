@@ -1,5 +1,6 @@
 from __future__ import print_function, absolute_import
 
+import functools
 import numpy as np
 import torch
 from torch.utils.data import Dataset
@@ -11,7 +12,7 @@ class PoseGenerator(Dataset):
 
         self._poses_3d = np.concatenate(poses_3d)
         self._poses_2d = np.concatenate(poses_2d)
-        self._actions = reduce(lambda x, y: x + y, actions)
+        self._actions = functools.reduce(lambda x, y: x + y, actions)
 
         assert self._poses_3d.shape[0] == self._poses_2d.shape[0] and self._poses_3d.shape[0] == len(self._actions)
         print('Generating {} poses...'.format(len(self._actions)))

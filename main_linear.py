@@ -255,7 +255,9 @@ def evaluate(data_loader, model_pos, device):
         num_poses = targets_3d.size(0)
 
         inputs_2d = inputs_2d.to(device)
+        print('inputs_2d: {}'.format(inputs_2d.shape))
         outputs_3d = model_pos(inputs_2d.view(num_poses, -1)).view(num_poses, -1, 3).cpu()
+        print('inputs_3d: {}'.format(outputs_3d.shape))
         outputs_3d = torch.cat([torch.zeros(num_poses, 1, outputs_3d.size(2)), outputs_3d], 1)  # Pad hip joint (0,0,0)
 
         epoch_loss_3d_pos.update(mpjpe(outputs_3d, targets_3d).item() * 1000.0, num_poses)
